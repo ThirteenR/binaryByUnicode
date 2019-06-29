@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="binaryByUnicode:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/binaryByUnicode_jar</output-path>
+    <root id="archive" name="binaryByUnicode.jar">
+      <element id="module-output" name="binaryByUnicode" />
+    </root>
+  </artifact>
+</component>
