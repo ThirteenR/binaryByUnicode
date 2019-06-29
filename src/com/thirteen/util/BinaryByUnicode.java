@@ -130,8 +130,9 @@ public class BinaryByUnicode {
      */
     private String fillRow(String next) {
         StringBuilder sb = new StringBuilder();
+        String[] container;
         for (int i = 0; i < next.length(); ++i) {
-            String[] container = new String[4];
+            container= new String[4];
             int c = next.charAt(i);
             container[0] = String.valueOf((char) c);
             container[1] = "" + c;
