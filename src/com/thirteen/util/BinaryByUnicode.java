@@ -1,8 +1,8 @@
 package com.thirteen.util;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-
-import static com.sun.tools.javac.util.LayoutCharacters.*;
+import java.util.Set;
 
 /**
  * Author: thirteen
@@ -14,10 +14,13 @@ public class BinaryByUnicode {
     private static final String END = "end";
     private static final String RULE = "*";
     private static final char LINE_ATOM = '-';
-    private static final char LF_L = (char) LF;
+    private static final char LF_L = '\n';
     private static final String[] HEADER = new String[]{"Original","Unicode","HEX","Binary"};
-    private static final int CELL_WIDTH = 25;
-
+    private static final int CELL_WIDTH = 32;
+    private ArrayList<Encoder> encoders = new ArrayList<Encoder>();
+ public void addEncoder(Encoder encode){
+     this.encoders.add(encode);
+ }
     /**
      * 启动应用并监听控制台输入
      * @param scanner
@@ -70,9 +73,14 @@ public class BinaryByUnicode {
      * @return
      */
     private String createHeader() {
-
         StringBuilder line = new StringBuilder();
-        createRow(line, HEADER, true);
+        int size = this.encoders.size();
+        String[] header = new String[size + HEADER.length];
+        System.arraycopy(HEADER,0,header,0,HEADER.length);
+        for (int i =HEADER.length;i<size+HEADER.length;++i){
+            header[i] = this.encoders.get(i-HEADER.length).getType();
+        }
+        createRow(line, header, true);
         return line.toString();
     }
 
@@ -130,14 +138,18 @@ public class BinaryByUnicode {
      */
     private String fillRow(String next) {
         StringBuilder sb = new StringBuilder();
+        int encodersSize = this.encoders.size();
         String[] container;
         for (int i = 0; i < next.length(); ++i) {
-            container= new String[4];
+            container= new String[HEADER.length+encodersSize];
             int c = next.charAt(i);
             container[0] = String.valueOf((char) c);
             container[1] = "" + c;
             container[2] = "0x" + Integer.toHexString(c);
             container[3] = Integer.toBinaryString(c);
+            for (int j=HEADER.length;j<container.length;++j){
+                container[j] = this.encoders.get(j-HEADER.length).encoding(c);
+            }
             createRow(sb, container);
         }
         return sb.toString();
@@ -173,6 +185,6 @@ public class BinaryByUnicode {
         return dest;
     }
     private int rowWidth(){
-        return (CELL_WIDTH+1)*HEADER.length+1;
+        return (CELL_WIDTH+1)*(HEADER.length+this.encoders.size())+1;
     }
 }
