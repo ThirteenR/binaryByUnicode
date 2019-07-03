@@ -95,7 +95,7 @@ public class UTF8Code implements Encoder {
         byte[] src = s.getBytes();
         int offset = Byte.SIZE - src.length;
         System.arraycopy(src, 0, this.singleBytes, offset, src.length);
-        return new String(this.singleBytes);
+        return new String(this.singleBytes,0,this.singleBytes.length-1);
     }
 
     private String doubleBytes(int unicode) {
